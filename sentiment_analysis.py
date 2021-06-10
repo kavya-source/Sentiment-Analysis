@@ -1,23 +1,19 @@
-#!/usr/bin/env python
+
 # coding: utf-8
-
-# In[4]:
-
 
 import pandas as pd
 import numpy as np 
 import os
-###
+
 import re
 from nltk.tokenize import word_tokenize 
 from nltk.corpus import stopwords
 from nltk.stem import PorterStemmer
-###
+
 from sklearn.metrics import f1_score, accuracy_score
 
-#*************************************************
 #### BASE CLASS
-#****************************************************   
+  
 class Base:
     """Base class that houses common utilities for reading in test data
     and calculating model accuracy and F1 scores.
@@ -28,9 +24,8 @@ class Base:
         self.test_path = test_path
         self.mix = mix
         
-    #****************************************************
     #### Get Training Data
-    #****************************************************
+    
     def get_train_data(self, train_path, mix)-> pd.DataFrame:
         '''Function to fetch train data and create a DataFrame for Training a Model'''
         print("Get Training Data")
@@ -43,7 +38,7 @@ class Base:
                 pos_data_train = open(train_path+"pos/"+filename, 'r' , encoding="ISO-8859-1").read()
                 text.append(pos_data_train)
                 rating.append("1")
-            ## Get Negative Lael Train Data
+            ## Get Negative Label Train Data
             for filename in os.listdir(train_path+"neg"):
                 neg_data_train = open(train_path+"neg/"+filename, 'r' , encoding="ISO-8859-1").read()
                 text.append(neg_data_train)
@@ -62,9 +57,9 @@ class Base:
         except Exception as e:
             print("There is an eror in get_train_data: ", e)
             pass
-    #****************************************************
+   
     #### Get Test Data
-    #****************************************************
+    
     def get_test_data(self,test_path) -> pd.DataFrame:
         '''Function to fetch Test data and create a DataFrame Testing Accracy of the Model'''
         print("Get Test Data")
@@ -90,9 +85,9 @@ class Base:
             return(df_test)
         except Exception as ex:
             print("There is an eror in get_test_data: ", ex)
-    #****************************************************   
+       
      #### Clean the Text - Data Preprocessing
-    #****************************************************
+    
     def clean_data(self,text) -> pd.DataFrame:
         '''Function to clean Review Text'''
         print("Data Preprocessing")
@@ -124,10 +119,10 @@ class Base:
             return clean_text
         except Exception as e:
             print("In Exception of clean_data: ", e)
-            return None
-    #****************************************************   
+            return None  
+        
         #### Tokenize the Reviews
-    #****************************************************
+   
     def tokenization(df_reviews):
         '''Tokenize the Review Text'''
         print(" Tokenize the Reviews")
@@ -141,10 +136,8 @@ class Base:
         df_words = pd.DataFrame(data=bag_of_words.toarray(),columns=tokens)
         return df_words
 
-
-#****************************************************
 #### CHILD CLASS
-#****************************************************     
+     
     
 class LogisticRegressionSentiment(Base):
     """Predict fine-grained sentiment scores using a sklearn Logistic Regression pipeline."""
@@ -162,9 +155,9 @@ class LogisticRegressionSentiment(Base):
                 ('clf', LogisticRegression(solver='liblinear', multi_class='auto')),
             ]
         )
-    #****************************************************   
+     
         #### Get Accuracy Score
-    #****************************************************
+    
     def accuracy_score(self,Rating,Pred_Rating)-> pd.DataFrame:
         '''Get Accuracy Score'''
         print("Get accuracy score")
@@ -185,9 +178,8 @@ class LogisticRegressionSentiment(Base):
         print("Accuracy of the Logictic Regression Model is:  ",score)
         return learner
 
-#****************************************************
 #### Main
-#****************************************************   
+
     
 if __name__ == "__main__":
         print("...Start Building Logistic Regression Model...")
@@ -217,7 +209,7 @@ if __name__ == "__main__":
                 break
 
 
-# In[ ]:
+
 
 
 
